@@ -259,14 +259,17 @@ def mathjax_for_markdown(pelicanobj, mathjax_script, mathjax_settings):
     related content"""
 
     # Create the configuration for the markdown template
-    config = {}
-    config['mathjax_script'] = mathjax_script
-    config['math_tag_class'] = 'math'
-    config['auto_insert'] = mathjax_settings['auto_insert']
+    config = {
+        'mathjax_script': mathjax_script,
+        'math_tag_class': 'math',
+        'auto_insert': mathjax_settings['auto_insert']
+    }
 
-    # Instantiate markdown extension and append it to the current extensions
+    # Instantiate markdown extension and append it to the current extensions.
     try:
-        pelicanobj.settings['MD_EXTENSIONS'].append(PelicanMathJaxExtension(config))
+        # The MD_EXTENSIONS dictionary is of the form {extension: config}, but
+        # config isn't required when the extension is already instantiated.
+        pelicanobj.settings['MD_EXTENSIONS'][PelicanMathJaxExtension(config)] = None
     except:
         sys.excepthook(*sys.exc_info())
         sys.stderr.write("\nError - the pelican mathjax markdown extension failed to configure. MathJax is non-functional.\n")
